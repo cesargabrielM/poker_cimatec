@@ -6,24 +6,13 @@
 #include "pilha.h"
 #define NUMERO_DE_CARTAS 13
 #define NUMERO_DE_NAIPES 4
-#define TOTAL_CARTAS 52
-
-// Estrutura para representar uma carta
-typedef struct {
-    char *valor;
-    char *naipe;
-} Carta;
-
-typedef struct{
-    Carta cartas[TOTAL_CARTAS];
-} Baralho;
 
 void embaralha(Baralho *b, tp_pilha *p){
     srand(time(NULL));
     int ran =0;
 
     for (int i = 0; i < TOTAL_CARTAS; i++){
-        ran = rand()%52;
+        ran = rand() % 52;
         Carta temp = b -> cartas[i];
         b -> cartas[i] = b->cartas[ran];
         b->cartas[ran] = temp;
@@ -52,7 +41,7 @@ void inicializaBaralho(Baralho *b){
 
 }
 
-void imprimiBaralho(Baralho b){
+void imprimirBaralho(Baralho b){
     for (int i = 0; i < TOTAL_CARTAS; i++) {
         printf("%s de %s\n", b.cartas[i].valor, b.cartas[i].naipe);
   }
