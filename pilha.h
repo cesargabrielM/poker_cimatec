@@ -2,8 +2,19 @@
 #define PILHA_H
 #include <stdio.h>
 #define MAX 100
+#define TOTAL_CARTAS 52
+// Estrutura para representar uma carta
 
-typedef int tp_item;
+typedef struct {
+    char *valor;
+    char *naipe;
+} Carta;
+
+typedef struct{
+    Carta cartas[TOTAL_CARTAS];
+} Baralho;
+
+typedef Carta tp_item;
 
 typedef struct{
     int topo;
@@ -49,6 +60,9 @@ int tamanhoPilha(tp_pilha *p){
     return p -> topo + 1; //retorna o tamanho da mesma, adiciona 1 pois os valores do topo sao entre 0 e 99, adicionando 1 sera 1 a 100
 }
 //ira criar um tipo de copia da pilha e ira desempilhar elemento por elemento que ira mostrar qual elemento eh esse
+
+/* 
+Essa função não é útil e gera avisos desnecessários (por enquanto)
 void imprimirPilha(tp_pilha p){
     tp_item e;
 
@@ -59,5 +73,6 @@ void imprimirPilha(tp_pilha p){
         printf("%d ", e); // printa os elementos
     }
 }
+*/
 
 #endif
