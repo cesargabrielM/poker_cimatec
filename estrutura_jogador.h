@@ -46,7 +46,7 @@ void criarJogador(jogador *j, const char *nome, int fichas, int posicaoMesa) {
     //(Cauê): por enquanto o jogador está sendo inicializado sem cartas
     printf("\nJogador: %s\n", j->nome);
     printf("Fichas: %d\n", j->fichas);
-    printf("Posição na Mesa: %d\n\n", j->posicaoMesa);
+    printf("Posicao na Mesa: %d\n\n", j->posicaoMesa);
 }
 
 #endif

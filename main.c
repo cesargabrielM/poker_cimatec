@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include "estrutura_jogador.h"
 
+
 int main() {
-    printf("Bem-vindo ao Pôker 2025.1!");
+    printf("Bem-vindo ao Poker 2025.1!");
     while(1){
         int entrada;
         printf("Digite:\n 1 - Criar Jogador\n 2 - Sair do jogo.\n> ");
@@ -12,9 +13,9 @@ int main() {
             char nome[MAXIMO_NOME];
             int fichas;
             int posicaoMesa;
-            printf("Digite o nome do jogador (serão salvos apenas 20 caracteres): ");
+            printf("Digite o nome do jogador (serao salvos apenas 20 caracteres): ");
             scanf("%19s", nome);
-            printf("Digite o número de fichas que o jogador terá para começar: ");
+            printf("Digite o numero de fichas que o jogador tera para comecar: ");
             scanf("%d", &fichas);
             printf("Informe a posição do jogador na mesa: ");
             scanf("%d", &posicaoMesa);
@@ -26,6 +27,7 @@ int main() {
             printf("Entrada incorreta, encerrando jogo!");
             break;
         }
+        
     }
     return 0;
 }
