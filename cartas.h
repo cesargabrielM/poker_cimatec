@@ -1,9 +1,12 @@
 #ifndef CARTAS_H
 #define CARTAS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "pilha.h"
+
+#include "pilhaLE.h"
+
 #define NUMERO_DE_CARTAS 13
 #define NUMERO_DE_NAIPES 4
 
