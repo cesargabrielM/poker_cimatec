@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "estrutura_jogador.h"
-#include "pilha.h"
+#include "pilhaLE.h"
 #include "cartas.h"
 
 
