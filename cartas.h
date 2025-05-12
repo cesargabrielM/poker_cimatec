@@ -29,7 +29,6 @@ void inicializaBaralho(Baralho *b){
 
     char *naipes[NUMERO_DE_NAIPES] = {"Copas", "Ouros", "Espadas", "Paus"};
 
-    b[TOTAL_CARTAS];
 
     int index = 0;
     

@@ -2,14 +2,13 @@
 #define ESTRUTURA_JOGADOR
 #include <stdio.h>
 #include <string.h>
+#include "listade.h"
+#include "pilhaLE.h"
 #define MAXIMO_NOME 20 
 #define NUM_CARTAS 2
 
 //(Cauê): define 20 caracteres como o limite do nome do jogador e duas cartas (por mão)
 
-typedef struct{
-    char nome[MAXIMO_NOME];
-}carta; 
 
 /* 
 (Cauê): criei esse struct simplesmente para simular um tipo abstrato
@@ -28,7 +27,7 @@ a situação atual do jogador no momento da partida
 typedef struct{
     char nome[MAXIMO_NOME];
     int fichas;
-    carta mao[NUM_CARTAS]; //cada jogador só pode ter 2 cartas na mão
+    tp_listad *mao; //apenas armazena as cartas
     estado atual;
     int aposta;
     int posicaoMesa;
@@ -43,10 +42,15 @@ void criarJogador(jogador *j, const char *nome, int fichas, int posicaoMesa) {
     j->atual= ativo;  //(Cauê): jogador começa ativo
     j->aposta = 0; 
     j->posicaoMesa = posicaoMesa;
-    //(Cauê): por enquanto o jogador está sendo inicializado sem cartas
-    printf("\nJogador: %s\n", j->nome);
+    //jogadores irao receber uma mao vazia, para que futuramente seja implementada com a mesa
+    j->mao = inicializa_listad();
+    
+    //(cesar) exibe informacoes do jogador, junto com suas primeiras cartas
+    printf("\nJogador criado com sucesso!\n");
+    printf("\nNome: %s\n", j->nome);
     printf("Fichas: %d\n", j->fichas);
-    printf("Posicao na Mesa: %d\n\n", j->posicaoMesa);
+    printf("Posicao na Mesa: %d\n", j->posicaoMesa);
+    printf("A mao do jogador esta vazia!\n\n");
 }
 
 #endif
