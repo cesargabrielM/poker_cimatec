@@ -1,56 +1,54 @@
 #ifndef ESTRUTURA_JOGADOR
 #define ESTRUTURA_JOGADOR
+
 #include <stdio.h>
 #include <string.h>
+
 #include "listade.h"
 #include "pilhaLE.h"
-#define MAXIMO_NOME 20 
-#define NUM_CARTAS 2
 
-//(Cauê): define 20 caracteres como o limite do nome do jogador e duas cartas (por mão)
+// Constantes
+#define MAXIMO_NOME 20  // Tamanho máximo para nome do jogador
+#define NUM_CARTAS 2     // Número de cartas na mão de cada jogador
 
+/**
+ * Enumeração dos estados possíveis de um jogador
+ */
+typedef enum {
+    fora,    // Jogador não está na partida
+    foldou,  // Jogador desistiu da rodada
+    ativo    // Jogador está ativo na rodada
+} estado;
 
-/* 
-(Cauê): criei esse struct simplesmente para simular um tipo abstrato
-de carta, que será usado para definir o tipo do vetor "mao" (lê-se "mão"),
-que faz parte da estrutura do jogador. (Cauê)
-*/
+/**
+ * Estrutura que representa um jogador
+ */
+typedef struct {
+    char nome[MAXIMO_NOME];  // Nome do jogador
+    int fichas;              // Quantidade de fichas
+    tp_listad *mao;          // Lista de cartas na mão (2 cartas)
+    estado atual;            // Estado atual do jogador
+    int aposta;              // Valor apostado na rodada atual
+    int posicaoMesa;         // Posição física na mesa
+} jogador;
 
-typedef enum {fora, foldou, ativo} estado;
-
-/*
-(Cauê): isso é um enum, basicamente ele atribui um valor inteiro a cada elemento,
-no caso, out = 0, fold = 1, active = 2, isso vai ser usado para definir
-a situação atual do jogador no momento da partida
-*/
-
-typedef struct{
-    char nome[MAXIMO_NOME];
-    int fichas;
-    tp_listad *mao; //apenas armazena as cartas
-    estado atual;
-    int aposta;
-    int posicaoMesa;
-    
-}jogador;
-
-//(Cauê): cria o struct do tipo abstrato jogador, com os atributos
-
+/**
+ * Inicializa um novo jogador
+ * @param j Ponteiro para o jogador
+ * @param nome Nome do jogador
+ * @param fichas Fichas iniciais
+ * @param posicaoMesa Posição na mesa
+ */
 void criarJogador(jogador *j, const char *nome, int fichas, int posicaoMesa) {
-    strncpy(j->nome, nome, MAXIMO_NOME); //(Cauê): copia o parâmetro de nome para o jogador
-    j->fichas = fichas;
-    j->atual= ativo;  //(Cauê): jogador começa ativo
-    j->aposta = 0; 
-    j->posicaoMesa = posicaoMesa;
-    //jogadores irao receber uma mao vazia, para que futuramente seja implementada com a mesa
-    j->mao = inicializa_listad();
-    
-    //(cesar) exibe informacoes do jogador, junto com suas primeiras cartas
-    printf("\nJogador criado com sucesso!\n");
-    printf("\nNome: %s\n", j->nome);
-    printf("Fichas: %d\n", j->fichas);
-    printf("Posicao na Mesa: %d\n", j->posicaoMesa);
-    printf("A mao do jogador esta vazia!\n\n");
+    strncpy(j->nome, nome, MAXIMO_NOME); // Copia o nome
+    j->fichas = fichas;                  // Define fichas iniciais
+    j->atual = ativo;                    // Começa como ativo
+    j->aposta = 0;                       // Aposta inicial zero
+    j->posicaoMesa = posicaoMesa;        // Define posição na mesa
+    j->mao = inicializa_listad();        // Inicializa lista de cartas
+
+    printf("\nJogador %s criado com %d fichas (Posição %d)\n", 
+           j->nome, j->fichas, j->posicaoMesa);
 }
 
 #endif
