@@ -1,42 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "arvore_busca_binaria.h"
+#include "arvore_avl.h"
+
+/* 
+COMO USAR ESSA BIBLIOTECA?
+Primeiro de tudo, ao começo da cada partida, usamos a função
+inicializaArquivo(). 
+Depois disso, usamos criaAVL() para criar a árvore AVL que 
+armazenas as jogadas.
+*/
 
 /*
 Essa função abre o arquivo onde serão registradas as jogadas.
 SÓ PODE SER USADA NO INÍCIO DE CADA PARTIDA, SENÃO APAGA TUDO QUE
-FOI SALVO.
+FOI SALVO. Logo após criar o arquivo, ela fecha automaticamente.
+O arquivo só é aberto novamente na função salvaEmDisco() no modo
+apêndice.
+A cada jogada, usamos insereJogada(), com os respectivos parâmetros
+para salvar na árvore.
+Ao usar insereJogada(), ela automaticamente usa salvaEmDisco() para
+registrar no arquivo de texto.
 */
-FILE * abreArquivo(){
+void inicializaArquivo(){
     FILE *f = fopen("jogadas.txt", "w");
-    return f;
+    fclose(f);
 }
 
 /*
-Essa função fecha o arquivo onde são registradas as jogadas. Deve
-ser usada logo após abrir o arquivo. O modo apêndice é usado automa-
-ticamente pelas funçõs abaixo.
+Essa função cria a árvore AVL onde serão armazenadas as jogadas, 
+retorna o ponteiro dela.
 */
-void fechaArquivo(FILE* f){
-    fclose(f); //Fecha o arquivo
-}
-
-//Essa função cria a árvore de busca binária onde serão armazenadas as jogadas
-tp_arvore criaABB(){
-   tp_arvore p_raiz = inicializa_arvore();
+arvAvl * criaAVL(){
+    arvAvl *p_raiz = criarAvl();
     return p_raiz;
 }
 
 /*
-Essa função insere um nó na árvore de jogadas, ela precisa receber o ponteiro da 
+Essa função insere um nó na árvore AVL de jogadas, ela precisa receber o ponteiro da 
 raiz da árvore, o nome do jogador que a fez (recebe o ponteiro para o primeiro 
-caractere), a ordem da jogada e o título
+caractere da string), a ordem da jogada e o título. Após inserir, ela automaticamente
+chama a função salvaEmDisco()
 */
-tp_arvore insereJogada(tp_arvore *p_raiz, char* nome, int ordem, tipos_jogada titulo){
-    tp_arvore ultima_jogada;
-    ultima_jogada = insere_no(p_raiz, nome, ordem, titulo);
-    return ultima_jogada;
+void insereJogada(arvAvl *p_raiz, char* nome, int ordem, tipos_jogada titulo){
+    arvAvl ultima_jogada;
+    ultima_jogada = inserir(p_raiz, ordem, nome, titulo);
+    if(ultima_jogada != NULL) salvaEmDisco(ultima_jogada);
+    //Somente insere se for possível adicionar a jogada na árvore
 }
 
 /*
@@ -44,7 +54,7 @@ A função que eu vou criar agora funciona da seguinte forma: assim que um jogad
 fizer uma jogada, ela deve ser chamada. Ela precisa receber o ponteiro da última
 jogada feita, e que o arquivo de registro tenha sido criado e fechado.
 */
-void salvaEmDisco(tp_arvore ultima_jogada){
+void salvaEmDisco(arvAvl ultima_jogada){
     FILE *f = fopen("jogadas.txt", "a"); //Abre o arquivo no modo apêndice para registrar
     
     if(f == NULL){
