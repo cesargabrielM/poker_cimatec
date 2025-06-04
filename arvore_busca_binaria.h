@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "fila_dinamica.h"
 #define MAX_NOME 20
 
 typedef enum {  
