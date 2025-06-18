@@ -38,7 +38,7 @@ void posOrd(arvAvl* raiz);
 struct No* inserir(arvAvl* raiz, int valor, char *nome, tipos_jogada titulo);
 int remover(arvAvl* raiz, int valor);
 struct No* buscarMenor(struct No* atual);
-int consultarValorAvl(arvAvl* raiz, int valor);
+arvAvl consultarValorAvl(arvAvl* raiz, int valor);
 int maior(int x, int y);
 int altNo(struct No* no);
 int fatorBalanceamentoNo(struct No* no);
@@ -136,7 +136,6 @@ int totalNosAvl(arvAvl* raiz) {
 
 /* Insere um valor na árvore AVL mantendo o balanceamento */
 arvAvl inserir(arvAvl* raiz, int valor, char *nome, tipos_jogada titulo) {
-    int res;
     if(*raiz == NULL) {
         struct No* novo = (struct No*) malloc(sizeof(struct No));
         if(novo == NULL) return NULL; //Alterei a função para que ela retorne o endereço do novo nó (NULL)
@@ -195,21 +194,21 @@ void liberaAvl(arvAvl* raiz) {
 }
 
 /* Consulta se um valor existe na árvore AVL */
-int consultarValorAvl(arvAvl* raiz, int valor) {
-    if(raiz == NULL) return 0;
-    if(*raiz == NULL) return 0;
+arvAvl consultarValorAvl(arvAvl* raiz, int valor) {
+    if(raiz == NULL) return NULL;
+    if(*raiz == NULL) return NULL;
 
     struct No* atual = *raiz;
     while(atual != NULL) {
         if(atual->info == valor) {
-            return 1;
+            return atual;
         } else if(atual->info > valor) {
             atual = atual->esq;
         } else {
             atual = atual->dir;
         }
     }
-    return 0;
+    return NULL; /* Valor não encontrado */
 }
 
 /* Retorna a altura de um nó ou -1 se nulo */
