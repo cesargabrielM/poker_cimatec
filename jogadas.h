@@ -31,6 +31,7 @@ int inicializaArquivo(){
 
 arvAvl * criaAVL(){
     arvAvl *p_raiz = criarAvl();
+    if(p_raiz == NULL) return NULL;
     return p_raiz;
 }
 
