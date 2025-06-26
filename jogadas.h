@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "arvAvl_dict.h"
+#include "arvAvl_dict.h" // Garante que arvAvl e tipos_jogada são definidos
 
-/* 
-COMO USAR ESSA BIBLIOTECA?
+/* COMO USAR ESSA BIBLIOTECA?
 Primeiro de tudo, ao começo da cada partida, usamos a função
 inicializaArquivo(). 
 Depois disso, usamos criaAVL() para criar a árvore AVL que 
@@ -35,10 +34,13 @@ arvAvl * criaAVL(){
     return p_raiz;
 }
 
+// O retorno de 'inserir' é 'struct No*', então o tipo da variável
+// 'ultima_jogada' deve ser 'struct No*'. 'arvAvl' é 'struct No**'
+// Corrigido o tipo do retorno de 'inserir' e o tipo da variável local.
 int insereJogada(arvAvl *p_raiz, char* nome, int ordem, tipos_jogada titulo){
-    arvAvl ultima_jogada;
-    ultima_jogada = inserir(p_raiz, ordem, nome, titulo);
-    if(ultima_jogada == NULL) return 0; //Se não conseguiu inserir, retorna 0
+    struct No* ultima_jogada_node; // Alterado de arvAvl para struct No*
+    ultima_jogada_node = inserir(p_raiz, ordem, nome, titulo);
+    if(ultima_jogada_node == NULL) return 0; //Se não conseguiu inserir, retorna 0
     return 1; //Se conseguiu inserir, retorna 1
 }
 
@@ -47,11 +49,12 @@ int salvaEmDisco(arvAvl* p_raiz, int ordem){
     
     if(f == NULL){
         printf("Erro ao acessar o arquivo!");
-        fclose(f);
+        // Não é necessário fclose(f) se f é NULL.
         return 0;
     } //Tenta acessar o arquivo
 
-    arvAvl jogada_encontrada = consultarValorAvl(p_raiz, ordem); //Tenta achar a jogada pela ordem
+    // consultarValorAvl agora retorna struct No*
+    struct No* jogada_encontrada = consultarValorAvl(p_raiz, ordem); //Tenta achar a jogada pela ordem
     if(jogada_encontrada == NULL){
         fclose(f); //Se não conseguiu achar, fecha o arquivo
         return 0; //E retorna 0
