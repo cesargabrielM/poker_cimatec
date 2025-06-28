@@ -1,46 +1,54 @@
+#ifndef JOGADAS_H
+#define JOGADAS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "arvAvl_dict.h" // Garante que arvAvl e tipos_jogada são definidos
 
-/* COMO USAR ESSA BIBLIOTECA?
-Primeiro de tudo, ao começo da cada partida, usamos a função
+#include "arvAvl_dict.h"
+
+/* 
+COMO USAR ESSA BIBLIOTECA?
+
+- Primeiro de tudo, ao começo da cada partida, usamos a função
 inicializaArquivo(). 
-Depois disso, usamos criaAVL() para criar a árvore AVL que 
+
+- Depois disso, usamos criaAVL() para criar a árvore AVL que 
 armazenas as jogadas.
-Depois disso, a cada jogada, usamos insereJogada() passando o
+
+- Depois disso, a cada jogada, usamos insereJogada() passando o
 ponteiro da raiz da árvore, o nome do jogador que fez a jogada,
 essa função abre o arquivo onde serão registradas as jogadas.
 SÓ PODE SER USADA NO INÍCIO DE CADA PARTIDA, SENÃO APAGA TUDO QUE
 FOI SALVO. Logo após criar o arquivo, ela fecha automaticamente.
-O arquivo só é aberto novamente na função salvaEmDisco() no modo
+
+- O arquivo só é aberto novamente na função salvaEmDisco() no modo
 apêndice.
-A cada jogada, usamos insereJogada(), com os respectivos parâmetros
+
+- A cada jogada, usamos insereJogada(), com os respectivos parâmetros
 para salvar na árvore.
-Depois disso, quando a jogada for feita, usamos a função
+
+- Depois disso, quando a jogada for feita, usamos a função
 salvaEmDisco() passando o ponteiro da raiz da árvore e a ordem da jogada.
 */
 
-int inicializaArquivo(){
+static int inicializaArquivo(){
     FILE *f = fopen("jogadas.txt", "w");
     if(f == NULL) return 0; //Se não conseguiu abrir o arquivo, retorna 0
     fclose(f);
     return 1; //Se conseguiu abrir e fechar o arquivo, retorna 1
 }
 
-arvAvl * criaAVL(){
+static inline arvAvl *criaAVL(){
     arvAvl *p_raiz = criarAvl();
     if(p_raiz == NULL) return NULL;
     return p_raiz;
 }
 
-// O retorno de 'inserir' é 'struct No*', então o tipo da variável
-// 'ultima_jogada' deve ser 'struct No*'. 'arvAvl' é 'struct No**'
-// Corrigido o tipo do retorno de 'inserir' e o tipo da variável local.
-int insereJogada(arvAvl *p_raiz, char* nome, int ordem, tipos_jogada titulo){
-    struct No* ultima_jogada_node; // Alterado de arvAvl para struct No*
-    ultima_jogada_node = inserir(p_raiz, ordem, nome, titulo);
-    if(ultima_jogada_node == NULL) return 0; //Se não conseguiu inserir, retorna 0
+int insereJogada(arvAvl* p_raiz, char* nome, int ordem, tipos_jogada titulo){
+    arvAvl ultima_jogada;
+    ultima_jogada = inserir(p_raiz, ordem, nome, titulo);
+    if(ultima_jogada == NULL) return 0; //Se não conseguiu inserir, retorna 0
     return 1; //Se conseguiu inserir, retorna 1
 }
 
@@ -49,12 +57,11 @@ int salvaEmDisco(arvAvl* p_raiz, int ordem){
     
     if(f == NULL){
         printf("Erro ao acessar o arquivo!");
-        // Não é necessário fclose(f) se f é NULL.
+        fclose(f);
         return 0;
     } //Tenta acessar o arquivo
 
-    // consultarValorAvl agora retorna struct No*
-    struct No* jogada_encontrada = consultarValorAvl(p_raiz, ordem); //Tenta achar a jogada pela ordem
+    arvAvl jogada_encontrada = consultarValorAvl(p_raiz, ordem); //Tenta achar a jogada pela ordem
     if(jogada_encontrada == NULL){
         fclose(f); //Se não conseguiu achar, fecha o arquivo
         return 0; //E retorna 0
@@ -117,3 +124,5 @@ int salvaEmDisco(arvAvl* p_raiz, int ordem){
 
     return 1; //Se conseguiu salvar, retorna 1
 }
+
+#endif
