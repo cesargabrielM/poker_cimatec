@@ -1,4 +1,4 @@
-#ifndef ARVAVL_DICT_H // Adicionado para garantir que o cabeçalho é incluído apenas uma vez
+#ifndef ARVAVL_DICT_H
 #define ARVAVL_DICT_H
 
 #include <stdio.h>
@@ -33,27 +33,26 @@ struct No {
 };
 
 /* Protótipos das funções */
-arvAvl* criarAvl();
+static arvAvl* criarAvl();
 void preOrd(arvAvl* raiz);
 void emOrd(arvAvl* raiz);
-void posOrd(arvAvl* raiz);
-struct No* inserir(arvAvl* raiz, int valor, char *nome, tipos_jogada titulo);
+// static void posOrd(arvAvl* raiz); // Removido para evitar warning de função não usada
+static struct No* inserir(arvAvl* raiz, int valor, char *nome, tipos_jogada titulo);
 int remover(arvAvl* raiz, int valor);
-struct No* buscarMenor(struct No* atual);
-struct No* consultarValorAvl(arvAvl* raiz, int valor); // Corrigido para retornar struct No*
-int maior(int x, int y);
-int altNo(struct No* no);
-int fatorBalanceamentoNo(struct No* no);
-void rotacaoLl(arvAvl* raiz);
-void rotacaoRr(arvAvl* raiz);
-void rotacaoRl(arvAvl* raiz);
-void rotacaoLr(arvAvl* raiz);
+static struct No* buscarMenor(struct No* atual);
+static struct No* consultarValorAvl(arvAvl* raiz, int valor);
+static int maior(int x, int y);
+static int altNo(struct No* no);
+static int fatorBalanceamentoNo(struct No* no);
+static void rotacaoLl(arvAvl* raiz);
+static void rotacaoRr(arvAvl* raiz);
+static void rotacaoRl(arvAvl* raiz);
+static void rotacaoLr(arvAvl* raiz);
 
-// DECLARAR como extern aqui. A DEFINIÇÃO estará em um arquivo .c (como main.c)
-extern int contPrint; //
+int contPrint = 0; // Variável global para controle de impressão
 
 /* Cria uma árvore AVL vazia e retorna um ponteiro para ela */
-arvAvl* criarAvl() {
+static arvAvl* criarAvl() {
     arvAvl* raiz = (arvAvl*) malloc(sizeof(arvAvl)); //
     if(raiz != NULL) { //
         *raiz = NULL; //
@@ -63,7 +62,7 @@ arvAvl* criarAvl() {
 
 /* Verifica se a árvore AVL está vazia.
 Retorna 1 se vazia ou ponteiro nulo, 0 caso contrário */
-int estahVaziaAvl(arvAvl* raiz) {
+static inline int estahVaziaAvl(arvAvl* raiz) {
     if(raiz == NULL) return 1; //
     if(*raiz == NULL) return 1; //
     return 0; //
@@ -98,21 +97,21 @@ void emOrd(arvAvl* raiz) {
 }
 
 /* Imprime a árvore em pós-ordem (Esquerda, Direita, Raiz) */
-void posOrd(arvAvl* raiz) {
-    if(raiz == NULL) return; //
-    if(*raiz != NULL) { //
-        posOrd(&((*raiz)->esq)); //
-        posOrd(&((*raiz)->dir)); //
-        if(contPrint != 0) { //
-            printf(" "); //
-        }
-        printf("%d", (*raiz)->info); //
-        contPrint++; //
-    }
-}
+// static void posOrd(arvAvl* raiz) {
+//     if(raiz == NULL) return; //
+//     if(*raiz != NULL) { //
+//         posOrd(&((*raiz)->esq)); //
+//         posOrd(&((*raiz)->dir)); //
+//         if(contPrint != 0) { //
+//             printf(" "); //
+//         }
+//         printf("%d", (*raiz)->info); //
+//         contPrint++; //
+//     }
+// }
 
 /* Retorna a altura da árvore AVL */
-int alturaAvl(arvAvl* raiz) {
+static inline int alturaAvl(arvAvl* raiz) {
     if(raiz == NULL) return 0; //
     if(*raiz == NULL) return 0; //
 
@@ -127,7 +126,7 @@ int alturaAvl(arvAvl* raiz) {
 }
 
 /* Retorna o total de nós da árvore */
-int totalNosAvl(arvAvl* raiz) {
+/* static int totalNosAvl(arvAvl* raiz) {
     if(raiz == NULL) return 0; //
     if(*raiz == NULL) return 0; //
 
@@ -135,11 +134,11 @@ int totalNosAvl(arvAvl* raiz) {
     int totDir = totalNosAvl(&((*raiz)->dir)); //
 
     return (totEsq + totDir + 1); //
-}
+} */
 
 /* Insere um valor na árvore AVL mantendo o balanceamento */
 // Corrigido para retornar struct No* para evitar warnings de tipo incompatível com arvAvl
-struct No* inserir(arvAvl* raiz, int valor, char *nome, tipos_jogada titulo) {
+static struct No* inserir(arvAvl* raiz, int valor, char *nome, tipos_jogada titulo) {
     if(*raiz == NULL) { //
         struct No* novo = (struct No*) malloc(sizeof(struct No)); //
         if(novo == NULL) return NULL; //
@@ -183,7 +182,7 @@ struct No* inserir(arvAvl* raiz, int valor, char *nome, tipos_jogada titulo) {
 }
 
 /* Libera a memória de todos os nós recursivamente */
-void liberaNo(struct No* no) {
+static void liberaNo(struct No* no) {
     if(no == NULL) return; //
     liberaNo(no->esq); //
     liberaNo(no->dir); //
@@ -192,7 +191,7 @@ void liberaNo(struct No* no) {
 }
 
 /* Libera toda a árvore AVL */
-void liberaAvl(arvAvl* raiz) {
+static void liberaAvl(arvAvl* raiz) {
     if(raiz == NULL) return; //
     liberaNo(*raiz); // Passa o No* para a função
     free(raiz); //
@@ -201,7 +200,7 @@ void liberaAvl(arvAvl* raiz) {
 
 /* Consulta se um valor existe na árvore AVL */
 // Corrigido para retornar struct No* para evitar warnings de tipo incompatível com arvAvl
-struct No* consultarValorAvl(arvAvl* raiz, int valor) {
+static struct No* consultarValorAvl(arvAvl* raiz, int valor) {
     if(raiz == NULL) return NULL; //
     if(*raiz == NULL) return NULL; //
 
@@ -219,24 +218,24 @@ struct No* consultarValorAvl(arvAvl* raiz, int valor) {
 }
 
 /* Retorna a altura de um nó ou -1 se nulo */
-int altNo(struct No* no) {
+static int altNo(struct No* no) {
     if(no == NULL) return -1; //
     else return no->alt; //
 }
 
 /* Retorna o fator de balanceamento do nó (altura esq - altura dir) */
-int fatorBalanceamentoNo(struct No* no) {
+static int fatorBalanceamentoNo(struct No* no) {
     if(no == NULL) return 0; //
     return altNo(no->esq) - altNo(no->dir); //
 }
 
 /* Retorna o maior valor entre dois inteiros */
-int maior(int x, int y) {
+static int maior(int x, int y) {
     return (x > y) ? x : y; //
 }
 
 /* Rotação simples à esquerda (LL) */
-void rotacaoLl(arvAvl* raiz) {
+static void rotacaoLl(arvAvl* raiz) {
     struct No* no = (*raiz)->esq; //
     (*raiz)->esq = no->dir; //
     no->dir = *raiz; //
@@ -248,7 +247,7 @@ void rotacaoLl(arvAvl* raiz) {
 }
 
 /* Rotação simples à direita (RR) */
-void rotacaoRr(arvAvl* raiz) {
+static void rotacaoRr(arvAvl* raiz) {
     struct No* no = (*raiz)->dir; //
     (*raiz)->dir = no->esq; //
     no->esq = *raiz; //
@@ -260,13 +259,13 @@ void rotacaoRr(arvAvl* raiz) {
 }
 
 /* Rotação dupla à esquerda-direita (LR) */
-void rotacaoLr(arvAvl* raiz) {
+static void rotacaoLr(arvAvl* raiz) {
     rotacaoRr(&(*raiz)->esq); // Passa o endereço do ponteiro do filho esquerdo
     rotacaoLl(raiz); //
 }
 
 /* Rotação dupla à direita-esquerda (RL) */
-void rotacaoRl(arvAvl* raiz) {
+static void rotacaoRl(arvAvl* raiz) {
     rotacaoLl(&(*raiz)->dir); // Passa o endereço do ponteiro do filho direito
     rotacaoRr(raiz); //
 }
@@ -335,7 +334,7 @@ int remover(arvAvl* raiz, int valor) {
 }
 
 /* Busca o nó com menor valor da árvore (mais à esquerda) */
-struct No* buscarMenor(struct No* atual) {
+static struct No* buscarMenor(struct No* atual) {
     while(atual->esq != NULL) { //
         atual = atual->esq; //
     }
