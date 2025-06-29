@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <locale.h>
+
+// Adicionado para configurar o console do Windows
+#ifdef _WIN32
+#include <windows.h> 
+#endif
 
 #include "pilhaLE.h"
 #include "cartas.h"
@@ -10,12 +16,24 @@
 #include "jogadas.h"
 #include "mesa.h"
 
+
 void limpar_buffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
 int main() {
+    // --- MODIFICAÇÃO INÍCIO: Configuração do terminal ---
+    // Define a localização para permitir caracteres portugueses
+    setlocale(LC_ALL, "Portuguese_Brazilian");
+
+    // Se estiver no Windows, define a página de código do console para UTF-8
+    #ifdef _WIN32
+        SetConsoleOutputCP(CP_UTF8);
+    #endif
+    // --- MODIFICAÇÃO FIM ---
+
+
     srand((unsigned int)time(NULL));
 
     Mesa poker;
@@ -28,8 +46,8 @@ int main() {
 
     while(1) {
         limpar_tela(); //Limpa a tela a cada volta do menu
-        printf("=============== POKER TEXAS HOLD'EM ===============\n");
-
+        mostrarMenu();
+        
         //Mostra o status dos jogadores no menu
         if (poker.num_jogadores > 0) {
             printf("\n--- SALDO DOS JOGADORES ---\n");

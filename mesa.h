@@ -250,9 +250,6 @@ static void rodada_de_apostas(Mesa *mesa, int pos_inicial, int aposta_inicial, i
             // O turno do jogador só termina com uma ação válida
             int acao_valida = 0;
             do {
-                // ... (O seu código de exibir menu e switch case já está perfeito aqui) ...
-                // Cole o seu 'do-while' loop aqui, sem alterações.
-                // Exemplo de como deve ficar:
 
                 printf("\n--- Vez de %s (%d fichas) ---\n", j->nome, j->fichas);
                 printf("Pote atual: %d. Aposta para pagar: %d.\n", mesa->pote, aposta_atual_na_rodada - j->aposta_rodada);
@@ -276,12 +273,14 @@ static void rodada_de_apostas(Mesa *mesa, int pos_inicial, int aposta_inicial, i
                         (*jogadores_ativos_na_rodada)--;
                         printf("%s desiste.\n", j->nome);
                         acao_valida = 1;
+                        limpar_tela();
                         break;
                     case 'C':
                         if (j->aposta_rodada == aposta_atual_na_rodada) {
                             printf("%s passa (Check).\n", j->nome);
                              acao_valida = 1;
-                        } else { printf("Ação inválida! Precisa pagar ou aumentar.\n"); }
+                             limpar_tela();
+                        } else { printf("Ação inválida! Precisa pagar ou aumentar.\n"); limpar_tela(); }
                         break;
                     case 'B':
                         if (aposta_atual_na_rodada == 0) {
@@ -295,8 +294,9 @@ static void rodada_de_apostas(Mesa *mesa, int pos_inicial, int aposta_inicial, i
                                 jogador_que_aumentou = indice_jogador;
                                 printf("%s aposta %d.\n", j->nome, valor_aposta);
                                 acao_valida = 1;
-                            } else { printf("Valor de aposta inválido!\n"); }
-                        } else { printf("Ação inválida! Use Raise para aumentar.\n"); }
+                                limpar_tela();
+                            } else { printf("Valor de aposta inválido!\n"); limpar_tela();  }
+                        } else { printf("Ação inválida! Use Raise para aumentar.\n"); limpar_tela(); }
                         break;
                     case 'A':
                         valor_aposta = aposta_atual_na_rodada - j->aposta_rodada;
@@ -306,7 +306,8 @@ static void rodada_de_apostas(Mesa *mesa, int pos_inicial, int aposta_inicial, i
                             mesa->pote += valor_aposta;
                             printf("%s paga %d.\n", j->nome, valor_aposta);
                             acao_valida = 1;
-                        } else { printf("Ação inválida ou fichas insuficientes!\n"); }
+                            limpar_tela();
+                        } else { printf("Ação inválida ou fichas insuficientes!\n"); limpar_tela();}
                         break;
                     case 'R':
                         if (aposta_atual_na_rodada > 0) {
@@ -322,11 +323,12 @@ static void rodada_de_apostas(Mesa *mesa, int pos_inicial, int aposta_inicial, i
                                 jogador_que_aumentou = indice_jogador;
                                 printf("%s aumenta para %d.\n", j->nome, valor_aposta);
                                 acao_valida = 1;
-                            } else { printf("Valor de aumento inválido!\n"); }
-                        } else { printf("Ação inválida! Use Bet para a primeira aposta.\n"); }
+                                limpar_tela();
+                            } else { printf("Valor de aumento inválido!\n"); limpar_tela(); }
+                        } else { printf("Ação inválida! Use Bet para a primeira aposta.\n"); limpar_tela(); }
                         break;
                     default:
-                        printf("Opção inválida! Tente novamente.\n");
+                        printf("Opção inválida! Tente novamente.\n"); limpar_tela();
                 }
             } while (!acao_valida);
 
@@ -460,7 +462,7 @@ static void realizar_rodada_completa(Mesa *mesa, arvAvl *arvore_jogadas, int *co
         pop(&mesa->baralho, &queimada);
         for(int i=0; i<3; i++) { pop(&mesa->baralho, &c); insere_listad_no_fim(mesa->cartas_comunitarias, c); }
         // MODIFICAÇÃO: Desenha as cartas da mesa
-        desenhar_cartas(mesa->cartas_comunitarias, "Cartas da Mesa");
+        mostraMesa(mesa->cartas_comunitarias, "Cartas da Mesa");
         rodada_de_apostas(mesa, pos_inicial_posflop, 0, &jogadores_ativos);
     }
 
@@ -472,7 +474,7 @@ static void realizar_rodada_completa(Mesa *mesa, arvAvl *arvore_jogadas, int *co
         pop(&mesa->baralho, &c);
         insere_listad_no_fim(mesa->cartas_comunitarias, c);
         // MODIFICAÇÃO: Desenha as cartas da mesa
-        desenhar_cartas(mesa->cartas_comunitarias, "Cartas da Mesa");
+        mostraMesa(mesa->cartas_comunitarias, "Cartas da Mesa");
         rodada_de_apostas(mesa, pos_inicial_posflop, 0, &jogadores_ativos);
     }
     
@@ -484,7 +486,7 @@ static void realizar_rodada_completa(Mesa *mesa, arvAvl *arvore_jogadas, int *co
         pop(&mesa->baralho, &c);
         insere_listad_no_fim(mesa->cartas_comunitarias, c);
         // MODIFICAÇÃO: Desenha as cartas da mesa
-        desenhar_cartas(mesa->cartas_comunitarias, "Cartas da Mesa");
+        mostraMesa(mesa->cartas_comunitarias, "Cartas da Mesa");
         rodada_de_apostas(mesa, pos_inicial_posflop, 0, &jogadores_ativos);
     }
 
