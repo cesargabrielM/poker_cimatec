@@ -203,7 +203,7 @@ static void realizar_showdown(Mesa *mesa, arvAvl *arvore_jogadas, int *contador_
  * @param aposta_inicial O valor da aposta que precisa ser paga (e.g., o Big Blind)
  * @param jogadores_ativos_na_rodada Ponteiro para o contador de jogadores ativos
  */
-static void rodada_de_apostas(Mesa *mesa, int pos_inicial, int aposta_inicial, int *jogadores_ativos_na_rodada) {
+static void rodada_de_apostas(Mesa *mesa, int pos_inicial, int aposta_inicial, int *jogadores_ativos_na_rodada, arvAvl *arvore_jogadas, int *contador_jogadas) {
     int aposta_minima_para_aumentar = APOSTA_MINIMA;
     int aposta_atual_na_rodada = aposta_inicial;
     int jogador_que_aumentou = -1; // Índice do último jogador que aumentou
@@ -272,6 +272,10 @@ static void rodada_de_apostas(Mesa *mesa, int pos_inicial, int aposta_inicial, i
                         j->atual = foldou;
                         (*jogadores_ativos_na_rodada)--;
                         printf("%s desiste.\n", j->nome);
+                        // Log the fold action as a jogada
+                        insereJogada(arvore_jogadas, j->nome, *contador_jogadas, (tipos_jogada)-1);
+                        salvaEmDisco(arvore_jogadas, *contador_jogadas);
+                        (*contador_jogadas)++;
                         acao_valida = 1;
                         limpar_tela();
                         break;
@@ -452,7 +456,7 @@ static void realizar_rodada_completa(Mesa *mesa, arvAvl *arvore_jogadas, int *co
     // PRÉ-FLOP
     if (jogadores_ativos > 1) {
         printf("\n=== FASE DE APOSTAS: PRÉ-FLOP ===\n");
-        rodada_de_apostas(mesa, pos_inicial_preflop, big_blind_valor, &jogadores_ativos);
+        rodada_de_apostas(mesa, pos_inicial_preflop, big_blind_valor, &jogadores_ativos, arvore_jogadas, contador_jogadas);
     }
 
     // FLOP
@@ -463,7 +467,7 @@ static void realizar_rodada_completa(Mesa *mesa, arvAvl *arvore_jogadas, int *co
         for(int i=0; i<3; i++) { pop(&mesa->baralho, &c); insere_listad_no_fim(mesa->cartas_comunitarias, c); }
         // MODIFICAÇÃO: Desenha as cartas da mesa
         mostraMesa(mesa->cartas_comunitarias, "Cartas da Mesa");
-        rodada_de_apostas(mesa, pos_inicial_posflop, 0, &jogadores_ativos);
+        rodada_de_apostas(mesa, pos_inicial_posflop, 0, &jogadores_ativos, arvore_jogadas, contador_jogadas);
     }
 
     // TURN
@@ -475,7 +479,7 @@ static void realizar_rodada_completa(Mesa *mesa, arvAvl *arvore_jogadas, int *co
         insere_listad_no_fim(mesa->cartas_comunitarias, c);
         // MODIFICAÇÃO: Desenha as cartas da mesa
         mostraMesa(mesa->cartas_comunitarias, "Cartas da Mesa");
-        rodada_de_apostas(mesa, pos_inicial_posflop, 0, &jogadores_ativos);
+        rodada_de_apostas(mesa, pos_inicial_posflop, 0, &jogadores_ativos, arvore_jogadas, contador_jogadas);
     }
     
     // RIVER
@@ -487,7 +491,7 @@ static void realizar_rodada_completa(Mesa *mesa, arvAvl *arvore_jogadas, int *co
         insere_listad_no_fim(mesa->cartas_comunitarias, c);
         // MODIFICAÇÃO: Desenha as cartas da mesa
         mostraMesa(mesa->cartas_comunitarias, "Cartas da Mesa");
-        rodada_de_apostas(mesa, pos_inicial_posflop, 0, &jogadores_ativos);
+        rodada_de_apostas(mesa, pos_inicial_posflop, 0, &jogadores_ativos, arvore_jogadas, contador_jogadas);
     }
 
     // --- ETAPA 4: SHOWDOWN ---

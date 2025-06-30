@@ -116,8 +116,7 @@ int salvaEmDisco(arvAvl* p_raiz, int ordem){
             fprintf(f, "\n%s fez a seguinte jogada: %s", nomeJogador, nomeJogada);
             break;
         default:
-            strcpy(nomeJogada, "Desconhecida");
-            fprintf(f, "\n%s fez a seguinte jogada: %s", nomeJogador, nomeJogada);
+            fprintf(f, "\n%s viu a aposta alta e decidiu desistir da mão.", nomeJogador);
             break;
     }
     fclose(f);
