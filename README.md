@@ -10,3 +10,6 @@ Gostaríamos de destacar as contribuições de:
 - Nicolas Guelberg (https://github.com/GuelbergDev).
 
 Agradecemos a todos que participaram e ajudaram a tornar este projeto possível!
+---
+### Sobre o Projeto
+Este projeto foi uma avaliação na disciplina Algoritmos e Estrutura de Dados (AED) para o aprendizado de Estrutura de Dados, algoritmos de busca, lógica de programação e ponteiros.
